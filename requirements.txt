@@ -1,12 +1,26 @@
-certifi==2025.11.12
-charset-normalizer==3.4.4
-et_xmlfile==2.0.0
-idna==3.11
-openpyxl==3.1.5
-pyodbc==5.3.0
-PySide6==6.10.1
-PySide6_Addons==6.10.1
-PySide6_Essentials==6.10.1
-requests==2.32.5
-shiboken6==6.10.1
-urllib3==2.6.1
+# CDR 파일 처리 프로그램 필수 패키지
+# Python 3.13.6
+
+# cx_Freeze - 실행파일 빌드
+cx_Freeze>=7.2.8
+
+# PySide6 - GUI 프레임워크
+PySide6>=6.8.1
+
+# pyodbc - SQL Server 연결
+pyodbc>=5.2.0
+
+# openpyxl - 엑셀 파일 생성
+openpyxl>=3.1.5
+
+# requests - HTTP 요청 (구글 드라이브 다운로드)
+requests>=2.32.3
+
+# 기본 내장 패키지 (설치 불필요)
+# - sqlite3
+# - csv
+# - os
+# - sys
+# - re
+# - datetime
+# - pathlib
