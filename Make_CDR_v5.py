@@ -213,17 +213,29 @@ class CDRProcessThread(QThread):
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """
                 
+                # 데이터 전처리: 빈 문자열을 None으로 변환
+                processed_data = []
+                for row in csv_data:
+                    processed_row = []
+                    for value in row:
+                        # 빈 문자열이나 공백만 있는 경우 None으로 변환
+                        if value is None or (isinstance(value, str) and value.strip() == ''):
+                            processed_row.append(None)
+                        else:
+                            processed_row.append(value)
+                    processed_data.append(tuple(processed_row))
+                
                 batch_size = 1000
-                for i in range(0, len(csv_data), batch_size):
-                    batch = csv_data[i:i+batch_size]
+                for i in range(0, len(processed_data), batch_size):
+                    batch = processed_data[i:i+batch_size]
                     cursor.executemany(insert_sql, batch)
                     self.conn.commit()
-                    progress = 30 + int((i / len(csv_data)) * 20)
+                    progress = 30 + int((i / len(processed_data)) * 20)
                     self.progress_signal.emit(progress)
                     if i % 5000 == 0 and i > 0:
                         self.log(f"  {i}개 레코드 삽입 완료...")
                 
-                self.log(f"전체 데이터 삽입 완료: {len(csv_data)}개")
+                self.log(f"전체 데이터 삽입 완료: {len(processed_data)}개")
             except Exception as e:
                 raise Exception(f"데이터 삽입 실패: {e}")
             
